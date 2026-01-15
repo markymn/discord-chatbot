@@ -3,6 +3,8 @@ Description=Bud Swayze Discord Bot
 After=network.target
 
 [Service]
+User=ubuntu
+Group=ubuntu
 # Update this to the actual path on your Oracle VPS
 WorkingDirectory=/home/ubuntu/discord-chatbot
 # Update this to the path where you installed your dependencies (or just 'python3')
