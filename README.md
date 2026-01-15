@@ -6,11 +6,11 @@ Bud Swayze is a nonchalant, low-energy Discord bot powered by Groq's high-perfor
 
 - **AI-Powered Conversations**: Uses Groq (Llama 3.1, GPT-OSS, Compound-Mini) for rapid responses.
 - **Smart Routing**: Automatically decides whether to search the web for info or answer from internal logic.
-- **Conversation Memory**: Remembers the last 5 pairings (10 messages) to maintain context.
+- **Conversation Memory**: Remembers last 5 pairings (10 messages) to maintain context.
 - **Prompt Guard**: Built-in safety check using `meta-llama/llama-prompt-guard-2-22m`.
 - **Personality**: Strictly lowercase, uses shorthand (u, r, cuz), and maintains a 5-sentence response limit.
-- **Keep-Alive**: Includes a Flask server to keep the bot running 24/7 on hosting platforms like Replit.
 - **Special Rules**: Customizable behavior for specific users (e.g., Kenneth and Devaricate).
+- **Deployment**: Configured for Linux VPS hosting (Oracle Free Tier) using systemd.
 
 ## Setup
 
@@ -36,6 +36,20 @@ Bud Swayze is a nonchalant, low-energy Discord bot powered by Groq's high-perfor
    ```bash
    python main.py
    ```
+
+## VPS Deployment (Oracle Free Tier)
+
+1.  **Transfer Files**: Upload the project to your VPS (e.g., via `git clone`).
+2.  **Dependencies**: Run `pip install -r requirements.txt`.
+3.  **Service Setup**:
+    - Copy `discordbot.service` to `/etc/systemd/system/`.
+    - Edit the file to match your paths: `sudo nano /etc/systemd/system/discordbot.service`.
+    - Enable and start:
+      ```bash
+      sudo systemctl enable discordbot
+      sudo systemctl start discordbot
+      ```
+4.  **Monitoring**: Use `journalctl -u discordbot -f` to see logs.
 
 ## Configuration
 

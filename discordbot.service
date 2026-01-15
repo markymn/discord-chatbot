@@ -1,0 +1,19 @@
+[Unit]
+Description=Bud Swayze Discord Bot
+After=network.target
+
+[Service]
+# Update this to the actual path on your Oracle VPS
+WorkingDirectory=/home/ubuntu/discord-chatbot
+# Update this to the path where you installed your dependencies (or just 'python3')
+ExecStart=/usr/bin/python3 main.py
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=discordbot
+# You can also use a .env file for environment variables
+EnvironmentFile=/home/ubuntu/discord-chatbot/.env
+
+[Install]
+WantedBy=multi-user.target

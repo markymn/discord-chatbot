@@ -5,7 +5,6 @@ import logging
 import secrets
 import string
 from dotenv import load_dotenv
-from keep_alive import keep_alive
 import ai_manager
 
 # Configure logging
@@ -98,7 +97,6 @@ async def on_message(message):
             await message.reply("idk man, something went wrong. internal brain error.")
 
 def run_bot():
-    keep_alive()
     token = os.getenv("DISCORD_TOKEN")
     
     if not token:
