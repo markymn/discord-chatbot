@@ -40,7 +40,7 @@ def get_response(prompt, history=None, special_instruction=None):
         safety_response = safety_completion.choices[0].message.content.strip().lower()
         if "unsafe" in safety_response:
              logger.warning(f"Unsafe prompt detected: {prompt}")
-             return "beat it."
+             return "beat it"
     except Exception as e:
         logger.error(f"Safety Check Failed: {e}")
         # Default to safe if guard fails, but log it
@@ -53,7 +53,7 @@ def get_response(prompt, history=None, special_instruction=None):
         content_response = content_completion.choices[0].message.content.strip().lower()
         if "unsafe" in content_response:
              logger.warning(f"Harmful content detected: {prompt}")
-             return "wash your mouth out with soap. we don't talk like that here."
+             return "beat it"
     except Exception as e:
         logger.error(f"Content Moderation Failed: {e}")
         # Default to safe if guard fails, but log it
@@ -98,7 +98,7 @@ def _try_chain(models, prompt, history, special_instruction):
     groq_client = get_client()
     for model in models:
         try:
-            # Construct messages with history
+            # Main Bud personality
             system_content = (
                 "You are Bud. You're chill, low-energy, and nonchalant, but you still answer questions properly. "
                 "ALWAYS use all lowercase letters. Use shortened words like 'u', 'r', 'cuz', 'idk' when possible. "
@@ -110,11 +110,22 @@ def _try_chain(models, prompt, history, special_instruction):
                 "3. If you are saying something disappointing or sad, or if the topic is a bummer, include a wilted rose emoji (🥀) in your response."
             )
             
-            if special_instruction:
-                system_content += f" Special instruction: {special_instruction}"
-            
+            # Start message list with the main personality
             messages = [{"role": "system", "content": system_content}]
+            
+            # Add conversation history
             messages.extend(history)
+            
+            # If there is a special instruction (e.g., roasts or agreement), add it 
+            # as a forceful separate system message right before the user prompt.
+            if special_instruction:
+                logger.info(f"Applying special instruction for model {model}: {special_instruction}")
+                messages.append({
+                    "role": "system", 
+                    "content": f"CRITICAL PRIORITY: {special_instruction}"
+                })
+
+            # Finally add the user's current prompt
             messages.append({"role": "user", "content": prompt})
 
             completion = groq_client.chat.completions.create(

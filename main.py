@@ -67,7 +67,7 @@ async def on_message(message):
         triggered = True
 
     if triggered:
-        logger.info(f'[{SESSION_ID}] Triggered by {message.author.name} in {message.channel}')
+        logger.info(f'[{SESSION_ID}] Triggered by {message.author.name} ({message.author.id}) in {message.channel}')
         
         # Global cooldown check
         global LAST_RESPONSE_TIME
@@ -84,12 +84,16 @@ async def on_message(message):
         # Handle special user rules
         special_instruction = None
         
+        # Normalize name to lowercase for checking
+        author_name_low = message.author.name.lower()
+        
         # Kenneth's special rule
-        if message.author.name == "kennethlemons" and clean_prompt.lower().strip().endswith("right?"):
+        # replace(" ", "") handles "right?" and "right ?"
+        if author_name_low == "kennethlemons" and clean_prompt.lower().strip().replace(" ", "").endswith("right?"):
             special_instruction = "YOU MUST AGREE WITH THE USER'S STATEMENT. DO NOT BE NONCHALANT. AGREE STRONGLY."
         
         # Devaricate & Shub's special rule
-        if message.author.name in ["devaricate", "shub1212"]:
+        if author_name_low in ["devaricate", "shub1212"]:
             special_instruction = "end your message by calling the user a 'dweeb', 'twerp', or 'chif'"
             
         try:
