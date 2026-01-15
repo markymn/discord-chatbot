@@ -2,6 +2,7 @@ import discord
 import os
 import collections
 import logging
+import time
 import secrets
 import string
 from dotenv import load_dotenv
@@ -27,6 +28,9 @@ SESSION_ID = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for 
 
 # Memory for the bot (last 10 messages per channel: 5 pairings)
 channel_histories = collections.defaultdict(list)
+
+# Global cooldown (2 seconds)
+LAST_RESPONSE_TIME = 0.0
 
 @client.event
 async def on_ready():
@@ -64,6 +68,15 @@ async def on_message(message):
 
     if triggered:
         logger.info(f'[{SESSION_ID}] Triggered by {message.author.name} in {message.channel}')
+        
+        # Global cooldown check
+        global LAST_RESPONSE_TIME
+        current_time = time.time()
+        if current_time - LAST_RESPONSE_TIME < 2.0:
+            logger.info(f"[{SESSION_ID}] Cooldown active. Skipping.")
+            return
+        
+        LAST_RESPONSE_TIME = current_time
         
         # Get channel history
         history = channel_histories[message.channel.id]
