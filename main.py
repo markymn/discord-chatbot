@@ -2,6 +2,8 @@ import discord
 import os
 import collections
 import logging
+import secrets
+import string
 from dotenv import load_dotenv
 from keep_alive import keep_alive
 import ai_manager
@@ -21,12 +23,15 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+# Generate a unique session ID for this instance
+SESSION_ID = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(4))
+
 # Memory for the bot (last 10 messages per channel: 5 pairings)
 channel_histories = collections.defaultdict(list)
 
 @client.event
 async def on_ready():
-    logger.info(f'Logged in as {client.user} (ID: {client.user.id})')
+    logger.info(f'Logged in as {client.user} (ID: {client.user.id}) [SESSION: {SESSION_ID}]')
     logger.info('------')
 
 @client.event
@@ -59,7 +64,7 @@ async def on_message(message):
         triggered = True
 
     if triggered:
-        logger.info(f'Triggered by {message.author.name} in {message.channel}')
+        logger.info(f'[{SESSION_ID}] Triggered by {message.author.name} in {message.channel}')
         
         # Get channel history
         history = channel_histories[message.channel.id]
