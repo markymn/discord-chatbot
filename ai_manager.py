@@ -40,9 +40,22 @@ def get_response(prompt, history=None, special_instruction=None):
         safety_response = safety_completion.choices[0].message.content.strip().lower()
         if "unsafe" in safety_response:
              logger.warning(f"Unsafe prompt detected: {prompt}")
-             return "Beat it."
+             return "beat it."
     except Exception as e:
         logger.error(f"Safety Check Failed: {e}")
+        # Default to safe if guard fails, but log it
+    # --- Step 0.5: Content Moderation (Hate Speech/Safety) ---
+    try:
+        content_completion = groq_client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="meta-llama/llama-guard-4-12b"
+        )
+        content_response = content_completion.choices[0].message.content.strip().lower()
+        if "unsafe" in content_response:
+             logger.warning(f"Harmful content detected: {prompt}")
+             return "wash your mouth out with soap. we don't talk like that here."
+    except Exception as e:
+        logger.error(f"Content Moderation Failed: {e}")
         # Default to safe if guard fails, but log it
         pass
 

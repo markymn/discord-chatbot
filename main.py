@@ -85,12 +85,11 @@ async def on_message(message):
         special_instruction = None
         
         # Kenneth's special rule
-        # We check for 'kennethlemons' or 'shangchi' since that's what's showing up.
-        if (message.author.name in ["kennethlemons", "shangchi"]) and clean_prompt.lower().strip().endswith("right?"):
+        if message.author.name == "kennethlemons" and clean_prompt.lower().strip().endswith("right?"):
             special_instruction = "YOU MUST AGREE WITH THE USER'S STATEMENT. DO NOT BE NONCHALANT. AGREE STRONGLY."
         
-        # Devaricate's special rule
-        if message.author.name == "devaricate":
+        # Devaricate & Shub's special rule
+        if message.author.name in ["devaricate", "shub1212"]:
             special_instruction = "end your message by calling the user a 'dweeb', 'twerp', or 'chif'"
             
         try:
