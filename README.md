@@ -9,7 +9,7 @@ Bud Swayze is a nonchalant, low-energy Discord bot powered by Groq's high-perfor
 - **Conversation Memory**: Remembers last 5 pairings (10 messages) to maintain context.
 - **Prompt Guard**: Built-in safety check using `meta-llama/llama-prompt-guard-2-22m`.
 - **Personality**: Strictly lowercase, uses shorthand (u, r, cuz), and maintains a 5-sentence response limit.
-- **Special Rules**: Customizable behavior for specific users (e.g., Kenneth and Devaricate).
+- **Special Rules**: Customizable behavior for specific users.
 
 ## Setup
 
